@@ -30,13 +30,11 @@ Install packages
 Rscript jetpack.R
 ```
 
-Instead of including packages individually, add the following to the start of your scripts
+**Optional:** Instead of including packages individually, you can add this line to the start of your scripts
 
 ```R
 source("jetpack.R")
 ```
-
-You can remove any `library` calls.
 
 ## Adding New Packages
 

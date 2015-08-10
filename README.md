@@ -66,3 +66,12 @@ For more advanced projects, check out
 
 - [Packrat](https://rstudio.github.io/packrat/)
 - [rbundler](https://github.com/opower/rbundler)
+
+## Contributing
+
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
+
+- [Report bugs](https://github.com/ankane/jetpack/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/jetpack/pulls)
+- Write, clarify, or fix documentation
+- Suggest or add new features

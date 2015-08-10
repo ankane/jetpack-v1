@@ -76,6 +76,18 @@ For more advanced projects, check out
 - [Packrat](https://rstudio.github.io/packrat/)
 - [rbundler](https://github.com/opower/rbundler)
 
+## Reference
+
+Specify a mirror in `packages.R` with
+
+```sh
+repo("https://cran.r-project.org/")
+```
+
+## TODO
+
+- Support packages from Github and other sources
+
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:

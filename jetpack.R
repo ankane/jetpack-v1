@@ -31,9 +31,9 @@ for(package in packages) {
     }
   } else {
     if (packing) {
-      cat(paste0("Installing ", package))
+      cat(paste0("Installing ", package, " "))
       install.packages(package, dependencies=TRUE, repos=repos, quiet=TRUE)
-      cat(paste0(" ", packageVersion(package), "\n"))
+      cat(paste0(packageVersion(package), "\n"))
     } else {
       cat(paste0("Package not installed: ", package, ". Try running:\nRscript jetpack.R\n"))
       quit(status = 1)

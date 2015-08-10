@@ -84,6 +84,15 @@ Specify a mirror in `packages.R` with
 repo("https://cran.r-project.org/")
 ```
 
+## Upgrading
+
+Run
+
+```sh
+cd path/to/your/project
+curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
+```
+
 ## TODO
 
 - Support packages from Github and other sources

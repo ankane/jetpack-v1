@@ -38,7 +38,7 @@ source("jetpack.R")
 
 You can remove any `library` calls.
 
-### Adding New Packages
+## Adding New Packages
 
 Add the package to `packages.R`
 
@@ -54,7 +54,7 @@ Rscript jetpack.R
 
 That’s all there is to it!
 
-### A Few Notes
+## A Few Notes
 
 Jetpack is simple.
 

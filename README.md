@@ -2,9 +2,14 @@
 
 :fire: Simple package management for R
 
-- specify all your packages in one place
-- install them with a single command
-- include them all at once - no need for `library` calls
+Specify all your packages in one place
+
+```R
+package("plyr")
+package("reshape2")
+```
+
+Install them with a single command, and include them all at once - no need for `library` calls.
 
 Jetpack is lightweight - under 50 lines of code - and uses a [secure CRAN mirror](https://cran.r-project.org/sources.html) by default.
 

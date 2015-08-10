@@ -59,6 +59,12 @@ That’s all there is to it!
 
 ## A Few Notes
 
+Be sure to check `jetpack.R` and `packages.R` into version control.
+
+If deploying your project, you can run `Rscript jetpack.R` on every deploy to keep your servers up-to-date. This command is extremely fast if all packages are installed.
+
+## More Notes
+
 Jetpack is simple.
 
 - No additional dependency resolution

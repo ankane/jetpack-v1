@@ -14,7 +14,7 @@ Add Jetpack to your project
 
 ```sh
 cd path/to/your/project
-curl -O https://raw.github.com/ankane/jetpack/master/jetpack.R
+curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
 ```
 
 Create `packages.R` and add your packages

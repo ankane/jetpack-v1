@@ -11,6 +11,10 @@ repo <- function(repo) {
   repos <<- append(repos, repo)
 }
 
+if (!file.exists("packages.R")) {
+  cat("Could not find packages.R\n")
+  quit(status=1)
+}
 source("packages.R")
 
 # https support
@@ -36,7 +40,7 @@ for(package in packages) {
       cat(paste0(packageVersion(package), "\n"))
     } else {
       cat(paste0("Package not installed: ", package, ". Try running:\nRscript jetpack.R\n"))
-      quit(status = 1)
+      quit(status=1)
     }
   }
 }

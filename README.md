@@ -86,7 +86,7 @@ repo("https://cran.r-project.org/")
 
 ## Upgrading
 
-Run
+To get the latest version, run
 
 ```sh
 cd path/to/your/project

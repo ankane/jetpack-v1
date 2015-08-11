@@ -7,11 +7,12 @@ Specify all your packages in one place
 ```R
 package("plyr")
 package("reshape2")
+package("forecast", github="robjhyndman/forecast")
 ```
 
 Install them with a single command, and include them all at once - no need for `library` calls.
 
-Jetpack is lightweight - under 50 lines of code - and uses a [secure CRAN mirror](https://cran.r-project.org/sources.html) by default.
+Jetpack is lightweight and uses a [secure CRAN mirror](https://cran.r-project.org/sources.html) by default.
 
 ## How to Use
 
@@ -27,6 +28,7 @@ Create `packages.R` and add your packages
 ```R
 package("plyr")
 package("reshape2")
+package("forecast", github="robjhyndman/forecast")
 ```
 
 Install packages
@@ -84,6 +86,18 @@ Specify a mirror in `packages.R` with
 repo("https://cran.r-project.org/")
 ```
 
+Update packages
+
+```sh
+Rscript jetpack.R update
+```
+
+Update a single package
+
+```sh
+Rscript jetpack.R update plyr
+```
+
 ## Upgrading
 
 To get the latest version, run
@@ -92,10 +106,6 @@ To get the latest version, run
 cd path/to/your/project
 curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
 ```
-
-## TODO
-
-- Support packages from Github and other sources
 
 ## Contributing
 

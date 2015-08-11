@@ -80,12 +80,6 @@ For more advanced projects, check out
 
 ## Reference
 
-Specify a mirror in `packages.R` with
-
-```sh
-repo("https://cran.r-project.org/")
-```
-
 Update packages
 
 ```sh
@@ -96,6 +90,12 @@ Update a single package
 
 ```sh
 Rscript jetpack.R update plyr
+```
+
+Specify a mirror in `packages.R` with
+
+```sh
+repo("https://cran.r-project.org/")
 ```
 
 ## Upgrading

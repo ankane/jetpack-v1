@@ -1,6 +1,6 @@
 # Jetpack
 
-:fire: Simple package management for R
+:fire: Simple package manager for R
 
 Specify all your packages in one place
 

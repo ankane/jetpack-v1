@@ -1,17 +1,17 @@
 # jetpack 0.1.1
 
 jetpack.packages <- list()
-jetpack.repos <- list()
+jetpack.repos <- character()
 
 package <- function(name, github=NULL) {
   package <- list()
-  package$name = name
-  package$github = github
-  jetpack.packages <<- c(jetpack.packages, list(package))
+  package$name <- name
+  package$github <- github
+  jetpack.packages <<- append(jetpack.packages, list(package))
 }
 
 repo <- function(repo) {
-  jetpack.repos <<- c(jetpack.repos, list(repo))
+  jetpack.repos <<- append(jetpack.repos, repo)
 }
 
 jetpack.propel <- function() {

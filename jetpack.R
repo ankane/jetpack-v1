@@ -17,7 +17,7 @@ repo <- function(repo) {
 
 jetpack.propel <- function() {
   is.installed <- function(name) {
-    return(is.element(name, installed.packages()[, 1]))
+    is.element(name, installed.packages()[, 1])
   }
 
   install <- function(name, version = NULL, github = NULL) {
@@ -45,9 +45,9 @@ jetpack.propel <- function() {
   package.type <- function() {
     sysname <- unname(Sys.info()["sysname"])
     if (identical(sysname, "Darwin")) {
-      return(c("mac.binary"))
+      c("mac.binary")
     } else {
-      return(getOption("pkgType"))
+      getOption("pkgType")
     }
   }
 
@@ -57,7 +57,7 @@ jetpack.propel <- function() {
         return(package)
       }
     }
-    return(NULL)
+    NULL
   }
 
   if (!file.exists("packages.R")) {

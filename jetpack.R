@@ -44,7 +44,7 @@ jetpack.propel <- function() {
 
   packageType <- function() {
     sysname <- unname(Sys.info()["sysname"])
-    if(identical(sysname, "Darwin")) {
+    if (identical(sysname, "Darwin")) {
       return(c("mac.binary"))
     } else {
       return(getOption("pkgType"))

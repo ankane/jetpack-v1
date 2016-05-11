@@ -1,17 +1,18 @@
 # jetpack 0.1.1
 
 jetpack.packages <- list()
-jetpack.repos <- character()
+jetpack.repos <- list()
 
-package <- function(name, github=NULL) {
+package <- function(name, version=NULL, github=NULL) {
   package <- list()
-  package$name <- name
-  package$github <- github
-  jetpack.packages <<- append(jetpack.packages, list(package))
+  package$name = name
+  package$github = github
+  package$version = version
+  jetpack.packages <<- c(jetpack.packages, list(package))
 }
 
 repo <- function(repo) {
-  jetpack.repos <<- append(jetpack.repos, repo)
+  jetpack.repos <<- c(jetpack.repos, list(repo))
 }
 
 jetpack.propel <- function() {
@@ -19,8 +20,26 @@ jetpack.propel <- function() {
     return(is.element(name, installed.packages()[,1]))
   }
 
-  install <- function(name) {
-    install.packages(name, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE)
+  install <- function(name, version=NULL) {
+    if (is.null(version)) {
+      install.packages(name, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE)
+    } else {
+      install_version(name, version=version, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE, type=packageType())
+    }
+  }
+
+  uninstall <- function(name) {
+    cat(paste0("Removing ", name, " ", packageVersion(name), "\n"))
+    suppressMessages(remove.packages(name))
+  }
+
+  packageType <- function() {
+    sysname <- unname(Sys.info()["sysname"])
+    if(identical(sysname, "Darwin")) {
+      return(c("mac.binary"))
+    } else {
+      return(getOption("pkgType"))
+    }
   }
 
   find.package <- function(name) {
@@ -64,12 +83,24 @@ jetpack.propel <- function() {
 
   for (package in packages) {
     name <- package$name
+    version <- package$version
 
     if (packing) {
       if (update) {
         if (is.installed(name)) {
-          suppressMessages(remove.packages(name))
+          uninstall(name)
         }
+      }
+
+      if (!is.installed("devtools")) {
+        cat(paste0("Installing devtools "))
+        install("devtools")
+        cat(paste0(packageVersion("devtools"), "\n"))
+      }
+      library(devtools)
+
+      if (is.installed(name) && !is.null(version) && !identical(paste0(packageVersion(name)), version)) {
+        uninstall(name)
       }
 
       if (is.installed(name)) {
@@ -79,13 +110,9 @@ jetpack.propel <- function() {
         github <- package$github
         if (!is.null(github)) {
           cat(paste0("from ", github, " "))
-          if (!is.installed("devtools")) {
-            install("devtools")
-          }
-          library(devtools)
           devtools::install_github(github, quiet=TRUE)
         } else {
-          install(name)
+          install(name, version=version)
         }
         cat(paste0(packageVersion(name), "\n"))
       }

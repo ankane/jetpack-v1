@@ -20,11 +20,20 @@ jetpack.propel <- function() {
     return(is.element(name, installed.packages()[,1]))
   }
 
-  install <- function(name, version=NULL) {
-    if (is.null(version)) {
-      install.packages(name, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE)
-    } else {
+  install <- function(name, version=NULL, github=NULL) {
+    cat(paste0("Installing ", name, " "))
+    if (!is.null(github)) {
+      cat(paste0("from ", github, " "))
+      devtools::install_github(github, quiet=TRUE)
+    } else if (!is.null(version)) {
       install_version(name, version=version, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE, type=packageType())
+    } else {
+      install.packages(name, dependencies=TRUE, repos=jetpack.repos, quiet=TRUE)
+    }
+    if (is.installed(name)) {
+      cat(paste0(packageVersion(name), "\n"))
+    } else {
+      quit(status=1)
     }
   }
 
@@ -93,9 +102,7 @@ jetpack.propel <- function() {
       }
 
       if (!is.installed("devtools")) {
-        cat(paste0("Installing devtools "))
         install("devtools")
-        cat(paste0(packageVersion("devtools"), "\n"))
       }
       library(devtools)
 
@@ -106,15 +113,7 @@ jetpack.propel <- function() {
       if (is.installed(name)) {
         cat(paste0("Using ", name, " ", packageVersion(name), "\n"))
       } else {
-        cat(paste0("Installing ", name, " "))
-        github <- package$github
-        if (!is.null(github)) {
-          cat(paste0("from ", github, " "))
-          devtools::install_github(github, quiet=TRUE)
-        } else {
-          install(name, version=version)
-        }
-        cat(paste0(packageVersion(name), "\n"))
+        install(name, version=version, github=package$github)
       }
     } else {
       if (is.installed(name)) {

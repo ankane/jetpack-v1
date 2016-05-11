@@ -5,9 +5,9 @@ jetpack.repos <- list()
 
 package <- function(name, version = NULL, github = NULL) {
   package <- list()
-  package$name = name
-  package$github = github
-  package$version = version
+  package$name <- name
+  package$github <- github
+  package$version <- version
   jetpack.packages <<- c(jetpack.packages, list(package))
 }
 
@@ -17,7 +17,7 @@ repo <- function(repo) {
 
 jetpack.propel <- function() {
   is.installed <- function(name) {
-    return(is.element(name, installed.packages()[,1]))
+    return(is.element(name, installed.packages()[, 1]))
   }
 
   install <- function(name, version = NULL, github = NULL) {
@@ -26,7 +26,7 @@ jetpack.propel <- function() {
       cat(paste0("from ", github, " "))
       devtools::install_github(github, quiet = TRUE)
     } else if (!is.null(version)) {
-      install_version(name, version = version, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE, type = packageType())
+      devtools::install_version(name, version = version, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE, type = package.type())
     } else {
       install.packages(name, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE)
     }
@@ -42,7 +42,7 @@ jetpack.propel <- function() {
     suppressMessages(remove.packages(name))
   }
 
-  packageType <- function() {
+  package.type <- function() {
     sysname <- unname(Sys.info()["sysname"])
     if (identical(sysname, "Darwin")) {
       return(c("mac.binary"))

@@ -101,7 +101,7 @@ jetpack.propel <- function() {
         }
       }
 
-      if (!is.installed("devtools")) {
+      if (!is.installed("devtools") || compareVersion(paste0(packageVersion("devtools")), "1.10.0") < 0) {
         install("devtools")
       }
       library(devtools)

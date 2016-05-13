@@ -6,7 +6,7 @@ Specify all your packages in one place
 
 ```R
 package("plyr")
-package("reshape2")
+package("reshape2", "1.4.0")
 package("forecast", github="robjhyndman/forecast")
 ```
 

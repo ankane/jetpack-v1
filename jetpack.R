@@ -3,11 +3,12 @@
 jetpack.packages <- list()
 jetpack.repos <- list()
 
-package <- function(name, version = NULL, github = NULL) {
+package <- function(name, version = NULL, github = NULL, ref = NULL) {
   package <- list()
   package$name <- name
   package$github <- github
   package$version <- version
+  package$ref <- ref
   jetpack.packages <<- c(jetpack.packages, list(package))
 }
 
@@ -20,11 +21,14 @@ jetpack.propel <- function() {
     is.element(name, installed.packages()[, 1])
   }
 
-  install <- function(name, version = NULL, github = NULL) {
+  install <- function(name, version = NULL, github = NULL, ref = NULL) {
     cat(paste0("Installing ", name, " "))
     if (!is.null(github)) {
-      cat(paste0("from ", github, " "))
-      devtools::install_github(github, quiet = TRUE)
+      if (is.null(ref)) {
+        ref <- "master"
+      }
+      cat(paste0("from ", github, " ", ref, " "))
+      devtools::install_github(github, ref=ref, quiet = TRUE)
     } else if (!is.null(version)) {
       devtools::install_version(name, version = version, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE, type = package.type())
     } else {
@@ -113,7 +117,7 @@ jetpack.propel <- function() {
       if (is.installed(name)) {
         cat(paste0("Using ", name, " ", packageVersion(name), "\n"))
       } else {
-        install(name, version = version, github = package$github)
+        install(name, version = version, github = package$github, ref = package$ref)
       }
     } else {
       if (is.installed(name)) {

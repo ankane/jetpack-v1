@@ -1,3 +1,8 @@
+## 0.1.3 [unreleased]
+
+- 2nd pass to ensure correct versions
+- Added `VERBOSE` option
+
 ## 0.1.2
 
 - Added version support

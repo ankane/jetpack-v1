@@ -21,18 +21,27 @@ jetpack.propel <- function() {
     is.element(name, installed.packages()[, 1])
   }
 
-  install <- function(name, version = NULL, github = NULL, ref = NULL) {
+  install <- function(name, version = NULL, github = NULL, ref = NULL, dependencies = TRUE) {
+    quiet <- nchar(Sys.getenv("VERBOSE")) == 0
     cat(paste0("Installing ", name, " "))
     if (!is.null(github)) {
       if (is.null(ref)) {
         ref <- "master"
       }
       cat(paste0("from ", github, " ", ref, " "))
-      devtools::install_github(github, ref=ref, quiet = TRUE)
+      devtools::install_github(github, ref = ref, dependencies = dependencies, quiet = quiet)
     } else if (!is.null(version)) {
-      devtools::install_version(name, version = version, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE, type = package.type())
+      tryCatch({
+        devtools::install_version(name, version = version, dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type())
+      }, error = function (e) {
+        if (length(grep("is invalid for package", e$message)) > 0) {
+          devtools::install_version(name, version = gsub(".(\\d+)$", "-\\1", version), dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type())
+        } else {
+          stop(e)
+        }
+      })
     } else {
-      install.packages(name, dependencies = TRUE, repos = jetpack.repos, quiet = TRUE)
+      install.packages(name, dependencies = dependencies, repos = jetpack.repos, quiet = quiet)
     }
     if (is.installed(name)) {
       cat(paste0(packageVersion(name), "\n"))
@@ -126,6 +135,17 @@ jetpack.propel <- function() {
         cat(paste0("Package not installed: ", name, ". Try running:\nRscript jetpack.R\n"))
         quit(status = 1)
       }
+    }
+  }
+
+  # second pass to correct versions
+  for (package in packages) {
+    name <- package$name
+    version <- package$version
+
+    if (!is.null(version) && !identical(paste0(packageVersion(name)), version)) {
+      uninstall(name)
+      install(name, version = version, github = package$github, ref = package$ref, dependencies = FALSE)
     }
   }
 }

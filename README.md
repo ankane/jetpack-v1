@@ -92,6 +92,12 @@ Update a single package
 Rscript jetpack.R update plyr
 ```
 
+More verbosity
+
+```sh
+VERBOSE=1 Rscript jetpack.R
+```
+
 Specify a mirror in `packages.R` with
 
 ```sh

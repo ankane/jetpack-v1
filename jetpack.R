@@ -3,25 +3,27 @@
 jetpack.packages <- list()
 jetpack.repos <- list()
 
-package <- function(name, version = NULL, github = NULL, ref = NULL) {
-  package <- list()
-  package$name <- name
-  package$github <- github
-  package$version <- version
-  package$ref <- ref
-  jetpack.packages <<- c(jetpack.packages, list(package))
+jetpack.require <- function() {
+  jetpack.read()
+
+  for (package in jetpack.packages) {
+    name <- package$name
+
+    if (jetpack.installed(name)) {
+      suppressMessages(library(name, quiet = TRUE, character.only = TRUE))
+    } else {
+      cat(paste0("Package not installed: ", name, ". Try running:\nRscript jetpack.R\n"))
+      quit(status = 1)
+    }
+  }
 }
 
-repo <- function(repo) {
-  jetpack.repos <<- c(jetpack.repos, list(repo))
-}
-
-jetpack.propel <- function() {
+jetpack.install <- function() {
   is.installed <- function(name) {
-    is.element(name, installed.packages()[, 1])
+    jetpack.installed(name)
   }
 
-  install <- function(name, version = NULL, github = NULL, ref = NULL, dependencies = TRUE) {
+  install <- function(name, version = NULL, github = NULL, ref = NULL, dependencies = NA) {
     quiet <- nchar(Sys.getenv("VERBOSE")) == 0
     cat(paste0("Installing ", name, " "))
     if (!is.null(github)) {
@@ -73,68 +75,45 @@ jetpack.propel <- function() {
     NULL
   }
 
-  if (!file.exists("packages.R")) {
-    cat("Could not find packages.R\n")
-    quit(status = 1)
-  }
-  source("packages.R")
-
-  # https support
-  options(download.file.method = "libcurl")
-
-  if (length(jetpack.repos) == 0) {
-    repo("https://cran.r-project.org/")
-  }
+  jetpack.read()
 
   packages <- jetpack.packages
-  packing <- identical(sub(".*=", "", commandArgs()[4]), "jetpack.R")
 
-  if (packing) {
-    update <- identical(commandArgs()[6], "update")
-    update.name <- commandArgs()[7]
+  update <- identical(commandArgs()[6], "update")
+  update.name <- commandArgs()[7]
 
-    if (update && !is.na(update.name)) {
-      package <- find.package(update.name)
-      if (is.null(package)) {
-        cat(paste0("Unknown package: ", update.name, "\n"))
-        quit(status = 1)
-      }
-      packages <- list(package)
+  if (update && !is.na(update.name)) {
+    package <- find.package(update.name)
+    if (is.null(package)) {
+      cat(paste0("Unknown package: ", update.name, "\n"))
+      quit(status = 1)
     }
+    packages <- list(package)
   }
 
   for (package in packages) {
     name <- package$name
     version <- package$version
 
-    if (packing) {
-      if (update) {
-        if (is.installed(name)) {
-          uninstall(name)
-        }
-      }
-
-      if (!is.installed("devtools") || packageVersion("devtools") < "1.10.0") {
-        install("devtools")
-      }
-      library(devtools)
-
-      if (is.installed(name) && !is.null(version) && !identical(paste0(packageVersion(name)), version)) {
+    if (update) {
+      if (is.installed(name)) {
         uninstall(name)
       }
+    }
 
-      if (is.installed(name)) {
-        cat(paste0("Using ", name, " ", packageVersion(name), "\n"))
-      } else {
-        install(name, version = version, github = package$github, ref = package$ref)
-      }
+    if (!is.installed("devtools") || packageVersion("devtools") < "1.10.0") {
+      install("devtools")
+    }
+    library(devtools)
+
+    if (is.installed(name) && !is.null(version) && !identical(paste0(packageVersion(name)), version)) {
+      uninstall(name)
+    }
+
+    if (is.installed(name)) {
+      cat(paste0("Using ", name, " ", packageVersion(name), "\n"))
     } else {
-      if (is.installed(name)) {
-        suppressMessages(library(name, quiet = TRUE, character.only = TRUE))
-      } else {
-        cat(paste0("Package not installed: ", name, ". Try running:\nRscript jetpack.R\n"))
-        quit(status = 1)
-      }
+      install(name, version = version, github = package$github, ref = package$ref)
     }
   }
 
@@ -150,6 +129,38 @@ jetpack.propel <- function() {
   }
 }
 
-jetpack.propel()
+jetpack.installed <- function(name) {
+  is.element(name, installed.packages()[, 1])
+}
 
-rm(package, repo, jetpack.packages, jetpack.repos, jetpack.propel)
+jetpack.read <- function() {
+  package <<- function(name, version = NULL, github = NULL, ref = NULL) {
+    package <- list()
+    package$name <- name
+    package$github <- github
+    package$version <- version
+    package$ref <- ref
+    jetpack.packages <<- c(jetpack.packages, list(package))
+  }
+
+  repo <<- function(repo) {
+    jetpack.repos <<- c(jetpack.repos, list(repo))
+  }
+
+  if (!file.exists("packages.R")) {
+    cat("Could not find packages.R\n")
+    quit(status = 1)
+  }
+  source("packages.R")
+
+  # https support
+  options(download.file.method = "libcurl")
+
+  if (length(jetpack.repos) == 0) {
+    repo("https://cran.r-project.org/")
+  }
+}
+
+if (identical(sub(".*=", "", commandArgs()[4]), "jetpack.R")) {
+  jetpack.install()
+}

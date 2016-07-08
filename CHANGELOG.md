@@ -1,3 +1,7 @@
+## 0.2.0 [unreleased]
+
+- Added `jetpack.install` and `jetpack.require` methods
+
 ## 0.1.3
 
 - 2nd pass to ensure correct versions

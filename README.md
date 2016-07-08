@@ -37,10 +37,11 @@ Install packages
 Rscript jetpack.R
 ```
 
-**Optional:** Instead of including packages individually, you can add this line to the start of your scripts
+**Optional:** Instead of including packages individually, you can add these lines to the start of your scripts
 
 ```R
 source("jetpack.R")
+jetpack.require()
 ```
 
 ## Adding New Packages
@@ -58,6 +59,17 @@ Rscript jetpack.R
 ```
 
 That’s all there is to it!
+
+## Heroku
+
+Create an `init.r` with:
+
+```R
+source("jetpack.R")
+jetpack.install()
+```
+
+[Buildpack docs](https://github.com/virtualstaticvoid/heroku-buildpack-r)
 
 ## A Few Notes
 

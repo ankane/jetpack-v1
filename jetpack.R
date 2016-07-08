@@ -18,34 +18,43 @@ jetpack.require <- function() {
   }
 }
 
-jetpack.install <- function() {
+jetpack.install <- function(verbose = NULL) {
   is.installed <- function(name) {
     jetpack.installed(name)
   }
 
   install <- function(name, version = NULL, github = NULL, ref = NULL, dependencies = NA) {
-    quiet <- nchar(Sys.getenv("VERBOSE")) == 0
+    quiet <- !jetpack.verbose
+
+    possiblySuppress <- function(code) {
+      if (jetpack.verbose) {
+        code
+      } else {
+        suppressMessages(code)
+      }
+    }
+
     cat(paste0("Installing ", name, " "))
     if (!is.null(github)) {
       if (is.null(ref)) {
         ref <- "master"
       }
       cat(paste0("from ", github, " ", ref, "\n"))
-      devtools::install_github(github, ref = ref, dependencies = dependencies, quiet = quiet)
+      possiblySuppress(devtools::install_github(github, ref = ref, dependencies = dependencies, quiet = quiet))
     } else if (!is.null(version)) {
       cat("\n")
       tryCatch({
-        devtools::install_version(name, version = version, dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type())
+        possiblySuppress(devtools::install_version(name, version = version, dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type()))
       }, error = function (e) {
         if (length(grep("is invalid for package", e$message)) > 0) {
-          devtools::install_version(name, version = gsub(".(\\d+)$", "-\\1", version), dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type())
+          possiblySuppress(devtools::install_version(name, version = gsub(".(\\d+)$", "-\\1", version), dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type()))
         } else {
           stop(e)
         }
       })
     } else {
       cat("\n")
-      install.packages(name, dependencies = dependencies, repos = jetpack.repos, quiet = quiet)
+      possiblySuppress(install.packages(name, dependencies = dependencies, repos = jetpack.repos, quiet = quiet))
     }
     if (is.installed(name)) {
       cat(paste0("Installed ", name, " ", packageVersion(name), "\n"))
@@ -76,6 +85,11 @@ jetpack.install <- function() {
     }
     NULL
   }
+
+  if (is.null(verbose)) {
+    verbose <- nchar(Sys.getenv("VERBOSE")) != 0
+  }
+  jetpack.verbose <<- verbose
 
   jetpack.read()
 

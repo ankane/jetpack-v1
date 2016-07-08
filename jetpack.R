@@ -1,4 +1,4 @@
-# jetpack 0.1.3
+# jetpack 0.2.0
 
 jetpack.packages <- list()
 jetpack.repos <- list()

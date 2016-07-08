@@ -30,9 +30,10 @@ jetpack.install <- function() {
       if (is.null(ref)) {
         ref <- "master"
       }
-      cat(paste0("from ", github, " ", ref, " "))
+      cat(paste0("from ", github, " ", ref, "\n"))
       devtools::install_github(github, ref = ref, dependencies = dependencies, quiet = quiet)
     } else if (!is.null(version)) {
+      cat("\n")
       tryCatch({
         devtools::install_version(name, version = version, dependencies = dependencies, repos = jetpack.repos, quiet = quiet, type = package.type())
       }, error = function (e) {
@@ -43,10 +44,11 @@ jetpack.install <- function() {
         }
       })
     } else {
+      cat("\n")
       install.packages(name, dependencies = dependencies, repos = jetpack.repos, quiet = quiet)
     }
     if (is.installed(name)) {
-      cat(paste0(packageVersion(name), "\n"))
+      cat(paste0("Installed ", name, " ", packageVersion(name), "\n"))
     } else {
       quit(status = 1)
     }

@@ -69,6 +69,8 @@ source("jetpack.R")
 jetpack.install()
 ```
 
+The first deploy can take a few minutes, but future deploys should be very fast.
+
 [Buildpack docs](https://github.com/virtualstaticvoid/heroku-buildpack-r)
 
 ## A Few Notes

@@ -62,7 +62,7 @@ That’s all there is to it!
 
 ## Heroku
 
-Create an `init.r` with:
+Create an `init.R` with:
 
 ```R
 source("jetpack.R")

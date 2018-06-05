@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+#
 # jetpack 0.2.0
 
 jetpack.packages <- list()
@@ -177,6 +179,6 @@ jetpack.read <- function() {
   }
 }
 
-if (identical(sub(".*=", "", commandArgs()[4]), "jetpack.R")) {
+if (identical(sub(".*=", "", commandArgs()[4]), "bin/jetpack")) {
   jetpack.install()
 }

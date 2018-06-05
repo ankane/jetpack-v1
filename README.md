@@ -20,7 +20,9 @@ Add Jetpack to your project
 
 ```sh
 cd path/to/your/project
-curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
+mkdir bin
+curl -Ls https://raw.github.com/ankane/jetpack/master/jetpack.R > bin/jetpack
+chmod +x bin/jetpack
 ```
 
 Create `packages.R` and add your packages
@@ -34,13 +36,13 @@ package("forecast", github="robjhyndman/forecast")
 Install packages
 
 ```sh
-Rscript jetpack.R
+bin/jetpack
 ```
 
 **Optional:** Instead of including packages individually, you can add these lines to the start of your scripts
 
 ```R
-source("jetpack.R")
+source("bin/jetpack")
 jetpack.require()
 ```
 
@@ -55,17 +57,17 @@ package("inTrees")
 and run
 
 ```sh
-Rscript jetpack.R
+bin/jetpack
 ```
 
 That’s all there is to it!
 
 ## Heroku
 
-Create an `init.r` with:
+Create an `init.R` with:
 
 ```R
-source("jetpack.R")
+source("bin/jetpack")
 jetpack.install()
 ```
 
@@ -75,9 +77,9 @@ The first deploy can take a few minutes, but future deploys should be very fast.
 
 ## A Few Notes
 
-Be sure to check `jetpack.R` and `packages.R` into version control.
+Be sure to check `bin/jetpack` and `packages.R` into version control.
 
-If deploying your project, you can run `Rscript jetpack.R` on every deploy to keep your servers up-to-date. This command is extremely fast if all packages are installed.
+If deploying your project, you can run `bin/jetpack` on every deploy to keep your servers up-to-date. This command is extremely fast if all packages are installed.
 
 ## More Notes
 
@@ -97,19 +99,19 @@ For more advanced projects, check out
 Update packages
 
 ```sh
-Rscript jetpack.R update
+bin/jetpack update
 ```
 
 Update a single package
 
 ```sh
-Rscript jetpack.R update plyr
+bin/jetpack update plyr
 ```
 
 More verbosity
 
 ```sh
-VERBOSE=1 Rscript jetpack.R
+VERBOSE=1 bin/jetpack
 ```
 
 Specify a mirror in `packages.R` with
@@ -124,7 +126,8 @@ To get the latest version, run
 
 ```sh
 cd path/to/your/project
-curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
+curl -Ls https://raw.github.com/ankane/jetpack/master/jetpack.R > bin/jetpack
+chmod +x bin/jetpack
 ```
 
 ## Contributing

@@ -20,7 +20,7 @@ Add Jetpack to your project
 
 ```sh
 cd path/to/your/project
-curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
+curl -LsO https://raw.github.com/ankane/jetpack-v1/master/jetpack.R
 ```
 
 Create `packages.R` and add your packages
@@ -124,14 +124,14 @@ To get the latest version, run
 
 ```sh
 cd path/to/your/project
-curl -LsO https://raw.github.com/ankane/jetpack/master/jetpack.R
+curl -LsO https://raw.github.com/ankane/jetpack-v1/master/jetpack.R
 ```
 
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/jetpack/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/jetpack/pulls)
+- [Report bugs](https://github.com/ankane/jetpack-v1/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/jetpack-v1/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features

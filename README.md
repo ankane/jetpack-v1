@@ -2,6 +2,12 @@
 
 :fire: Simple package manager for R
 
+---
+
+**Get the [next generation version](https://github.com/ankane/jetpack)**
+
+---
+
 Specify all your packages in one place
 
 ```R
